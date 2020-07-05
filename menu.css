@@ -1,0 +1,71 @@
+.menu{
+  background: #fff2e5; /*gray*/
+  border: solid 2px #ffa54c; /*枠の太さとカラー*/
+  border-radius: 3px; /*枠の丸み*/
+  /*margin-bottom: 2em; /*下の空白*/
+margin: 1.2em 0.6em 1.8em;
+  display: block;/*改行して表示*/
+  vertical-align: baseline;
+}
+.menu h1{
+  font-size: 18px;
+  background: #ffa54c;
+  padding: 8px 12px;
+  margin: -1px;/*menu枠とh1を重ねる*/
+  text-align: center;/*中央寄せ*/
+  color: #FFF;/*白文字*/
+  font-weight: bold; /*太字->700と同じ*/
+  line-height: 1.4;
+}
+.menu ol{
+  font-weight: bold;
+  color: #333;/*数字の色*/
+  margin: 4px 5%;
+  padding: 0 0 0 20px;
+  border-radius: 3px;
+}
+.menu li{
+  font-size: .9em;
+}
+.menu a{
+  text-decoration: none;
+  padding: 8px 0;
+  color: #444;
+}
+a:hover, a:active{
+  color: #888;
+}
+
+/*ここからreadme*/
+
+h2{
+background: #f7f7f7;
+padding: 14px 12px;
+font-size: 24px;
+margin: 3.2em 0.6em 1.8em;
+font-weight: bold;
+line-height: 1.4
+}
+
+h3{
+background: #f7f7f7;
+padding: 14px 12px;
+font-size: 24px;
+margin: 3.2em 0.6em 1.8em;
+font-weight: bold;
+line-height: 1.4
+}
+
+h4{
+background: #f7f7f7;
+padding: 14px 12px;
+font-size: 24px;
+margin: 3.2em 0.6em 1.8em;
+font-weight: bold;
+line-height: 1.4
+}
+
+p.images{
+  text-align: center;
+  pointer-events: none;
+}
