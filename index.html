@@ -208,20 +208,302 @@
 <h1 class="tit">3.モールス解析</h1>
 <div class="SubBody">
   <div id="app" class="appmas">
+<!--/////////////////////////////////////////////////////////////////////////-->
     <div id="top" class="app">
-      <input type="button"class="bts" id="button1" value="読み込んで開始" onclick="document.getElementById('srcPath').click();" />
-      <input type="file" style="display:none;" id="srcPath" name="srcPath" accept="video/*"/>
-      <button id="stop" type="button" disabled>中止</button>
-      <div id="status" style="border:1px solid gray; width:201px; padding: 0px 5px; display:inline-block">動画を選択してください</div>
+      <input type="button"class="bts" id="Start" value="読み込んで開始" onclick="document.getElementById('Input').click();" />
+      <input type="file" style="display:none;" id="Input" name="srcPath" accept="video/*"/>
+      <button id="Stop" type="button" disabled>中止</button>
+      <div id="Status" style="border:1px solid gray; width:201px; padding: 0px 5px; display:inline-block">動画を選択してください</div>
     </div>
+<!--/////////////////////////////////////////////////////////////////////////-->
     <div id="mid" class="app">
       <img src="./images/lacam.png" width="380px">
     </div>
-    <div id="bot" class="app">
+<!--/////////////////////////////////////////////////////////////////////////-->
+    <div id="bott" class="app">
       あなたの番号は
-      <div id="numbers" style="border:1px solid gray; width:251px; height:1.3em; padding: 0px 5px; display:inline-block">＊＊＊ - ＊＊＊ - ＊＊＊</div>
+      <div id="Numbers" style="border:1px solid gray; width:251px; padding: 0px 5px; display:inline-block">***-***-***</div>
     </div>
+<!--/////////////////////////////////////////////////////////////////////////-->
+    <div id="test">
+      <div>
+          <video id="videoInput" width="1280px" height="720px" style="display:none"></video>
+      </div>
+      <div>
+        <canvas id="canvasOutput" width="64px" height="64px"></canvas>
+      </div>
+    </div>
+<!--/////////////////////////////////////////////////////////////////////////-->
   </div>
+  <!--=======================================================================-->
+  <script>
+  let input = document.getElementById('Input'); //入力ボタン
+  let start = document.getElementById('Start');//開始ボタン・・inputのほうで処理を進める・いらない
+  let stop = document.getElementById('Stop'); //中止ボタン
+  let status = document.getElementById('Status'); //状態表示テキストボックス
+  let numberbox = document.getElementById('Numbers');//数字表示用テキストボックス
+  /*テスト用*/
+  let videoinput = document.getElementById('videoInput')
+  let canvasOutput = document.getElementById('canvasOutput');
+
+
+  /*処理に必要なやーつ*/
+  let streaming = false;//動画を読み込んでいるか
+  let srcFile = "";
+  let cap = null;
+
+  let srcMat = null;
+  let gray = null;
+  let cntr = null;
+  let bin = null;
+  let rect = null;
+
+  let wpixs = 0;
+  let tcnt = 0;
+  let fcnt = 0;
+  let morse = "";
+  let numbers = "";
+
+  let getOk = false;
+  //////////////////////////////////////////////////////////////////////////////
+  const fps = 30;
+
+
+  window.addEventListener('load', () => {
+    console.log('Window Loaded');
+    onReady();  // cv.onRuntimeInitialized Is Not Working, So This Is Fallback
+  });
+
+  function onReady() {
+    console.log('On Ready');
+
+    // Start Video Capture
+    // Set Button Events
+    start.disabled = false;
+    stop.disabled  = true;
+
+    input.addEventListener("change",onStart,false);
+    stop.addEventListener('click', onStop);
+    status.innerText = '動画を選択してください';
+    numberbox.innerText ='＊＊＊-＊＊＊-＊＊＊'
+  };
+
+  function onStart() {
+        console.log('On Start : Success');
+        //srcFile = input.files[0];
+        videoinput.src = URL.createObjectURL(input.files[0]);//file の受け渡し
+
+        console.log(videoinput.height);
+
+        status.innerText = '解析中です。';
+        numberbox.innerText = '＊＊＊-＊＊＊-＊＊＊'
+        videoinput.play();
+
+        cap = new cv.VideoCapture(videoinput);
+        srcMat = new cv.Mat(videoinput.height, videoinput.width, cv.CV_8UC4);  // For Video Capture
+        gray = new cv.Mat(videoinput.height, videoinput.width, cv.CV_8UC1);  // For Canvas Preview
+        cntr = new cv.Mat(videoinput.height, videoinput.width, cv.CV_8UC1);
+        bin = new cv.Mat(videoinput.height, videoinput.width, cv.CV_8UC1);
+        // Start Process Video
+        streaming = true;
+        setTimeout(processVideo, 0);
+
+
+        start.disabled = true;
+        stop.disabled  = false;
+        input.value = '';
+  }
+
+  function onStop() {
+    console.log('stoped processing');
+
+    videoinput.pause();
+    status.innerText = '中止しました。';
+    streaming = false;
+    start.disabled = false;
+    stop.disabled  = true;
+  }
+
+  function onEnd(){
+      console.log('ended video');
+      videoinput.pause();
+      streaming = false;
+      start.disabled = false;
+      stop.disabled  = true;
+  }
+
+  videoinput.addEventListener('ended', (event) => {
+      onEnd();
+});
+
+  function processVideo() {
+      try {
+          if (!streaming) {//読み込み終了
+              // clean and stop.
+              if(numbers == ""){
+                status.innerText = '別の動画を選択。'
+                numberbox.innerText = '解読不可'
+              }
+              else{
+                status.innerText = "解析完了"
+                console.log(numbers);
+                numberbox.innerText = numbers.substr(0,3)+ "-" +numbers.substr(3,3)+ "-" +numbers.substr(6);
+              }
+              console.log('srcMat, gray ware deleted');
+              srcMat.delete();
+              gray.delete();
+              cntr.delete();
+              bin.delete();
+              rect.delete();
+              Init();
+              return;
+          }
+
+          let begin = Date.now();
+          // start processing.
+          cap.read(srcMat);
+          /*切り抜き場所の設定*/
+          let x = videoinput.width/2-32;
+          let y = videoinput.height/2-32;
+          rect = new cv.Rect(x, y, 64, 64)
+          /*切り抜き及び二値化*/
+          cntr = srcMat.roi(rect);
+          cv.cvtColor(cntr, gray, cv.COLOR_RGB2GRAY);
+          cv.threshold(gray, bin, 140, 255, cv.THRESH_BINARY);
+          cv.imshow('canvasOutput', bin);
+
+          wpixs = cv.countNonZero(bin);
+          if(wpixs>1000){
+            if(tcnt==0){
+              outline(fcnt);
+              fcnt = 0;
+              tcnt++;
+            }
+            else {
+              tcnt++;
+            }
+          }
+          else{
+            if(fcnt==0){
+              bin2morse(tcnt);
+              tcnt = 0;
+              fcnt++;
+            }
+            else{
+              fcnt++;
+            }
+          }
+          wpixs = 0;
+          let delay = 1000/fps - (Date.now() - begin);
+          setTimeout(processVideo, delay);
+      } catch (err) {
+          console.log('error');
+      }
+  }
+  function outline(z){
+    if (z > 27){
+      srchNumstart(morse);
+      console.log(morse);
+      console.log('>\n>\n');
+      morse = "";
+    }
+    else if ((z >= 24) && (z <= 27)){ //空白の長さ
+      console.log(morse);
+      console.log('空白');
+      morse = "";
+    }
+    else if ((z >= 9) && (z <= 12)){ // char間
+      srchNumstart(morse);
+      console.log(morse);
+      morse = "";
+    }
+    else if ((z >= 2) && (z <= 5)){
+      ; //何もしない
+    }
+  }
+
+  function bin2morse(o){
+    if ((o >= 9) && (o <= 12)){
+      morse = morse + "-";
+    }
+    else if ((o >= 2) && (o <= 5)){
+      morse = morse + ".";
+    }
+    else{ //noise:
+      ;
+    }
+  }
+
+  function srchNumstart(m)
+        {
+            const comp = "---...";
+
+            if (getOk)
+            {
+                if (m == "-")
+                {
+                  streaming=false;
+                }
+                else if (m ==".----")//1の時
+                {
+                    numbers = numbers + "1";
+                }
+                else if (m == "..---")
+                {
+                    numbers += "2";
+                }
+                else if (m == "...--")
+                {
+                    numbers += "3";
+                }
+                else if (m == "....-")
+                {
+                    numbers += "4";
+                }
+                else if (m == ".....")
+                {
+                    numbers += "5";
+                }
+                else if (m == "-....")
+                {
+                    numbers += "6";
+                }
+                else if (m == "--...")
+                {
+                    numbers += "7";
+                }
+                else if (m == "---..")
+                {
+                    numbers += "8";
+                }
+                else if (m == "----.")
+                {
+                    numbers += "9";
+                }
+                else if (m == "-----")
+                {
+                    numbers += "0";
+                }
+            }
+
+            if (m == comp)
+            {
+                getOk = true;
+            }
+            else
+            {
+                ;
+            }
+        }
+function Init(){
+  tcnt = 0;
+  fcnt = 0;
+  numbers = 0;
+  getOk=false;
+}
+
+  </script>
+  <script src="./js/opencv.js" async type="text/javascript"></script>
 </div>
 </section>
 </div>
