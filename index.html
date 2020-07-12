@@ -43,7 +43,7 @@
     </li>
   </ol>
   <p class="images"><!--画像をポップアップさせられたらカッコいいかも-->
-    <div align="left">
+    <div align="left" class="images">
     <img src="./images/set1.jpg" style="width:30%;height:auto;">
     <img src="./images/set2.jpg" style="width:30%;height:auto;">
     <img src="./images/set3.jpg" style="width:30%;height:auto;">
@@ -53,7 +53,7 @@
 <p>クリップを初めて撮るときは以下のような説明が出てくるので、あらかじめシェアボタンでスクリーンショットか動画を撮っておいてください。</p>
 <p class="images">
   <div align="left">
-  <img src="./images/firstshare.jpg" style="width:70%;height:auto;">
+  <img src="./images/firstshare.jpg" style="width:70%;height:auto;" class="images">
 </div>
 </p>
 <h3 style="display:inline;">【1-2:流れ】</h3>(<b> 1 </b>と<b> 2 </b>で<span style="color:red">試合が始まっている必要はない</span>です。)<br>
@@ -133,7 +133,7 @@
 </table>
 <li>最後のランタン状態をSaveし、Solveを押すと青いチェックが付くので、改めて示されたボタンを押しに行きます。
 </ol>
-<img src="./images/Solve.gif" style="width:55%;">
+<img src="./images/Solve.gif" style="width:55%;" class="images">
 <ul>
 <li><span style="color:red;font-size:0.8em;">Nextを押しても、サイトの表示はそのままなので間違えないようにしましょう。</span></li>
 <li><span style="color:red;font-size:0.8em;">1回1回ボタンを戻す必要はないので、確認したら次のボタンを押しに行きましょう。</span></li>
@@ -217,7 +217,7 @@
     </div>
 <!--/////////////////////////////////////////////////////////////////////////-->
     <div id="mid" class="app">
-      <img src="./images/lacam.png" width="380px">
+      <img src="./images/lacam.png" width="380px" class="images">
     </div>
 <!--/////////////////////////////////////////////////////////////////////////-->
     <div id="bott" class="app">
@@ -232,15 +232,15 @@
       <div>
         <canvas id="canvasOutput" width="64px" height="64px"></canvas>
         <ul>
-        <li>対応動画：.mp4 ＊他は確かめてません＊</li>
-        <li>対応フレームレート：30fps  ＊使用上60fps対応ではありません＊</li>
-        <li>読み込み開始後にコンソール(chromeだとctrl+shift+i)を開くと一応馬鹿みたいにモールス符号が流れてきます</li>
-        <li>htmlもcssもjsほとんど初めての人が0から手打ちで書き上げたサイトなので不備しかありませんが宣伝↓</li>
-      </ul>
+          <li>対応動画：.mp4 ＊他は確かめてません＊</li>
+          <li>対応フレームレート：30fps  ＊使用上60fps対応ではありません＊</li>
+          <li>読み込み開始後にコンソール(chromeだとctrl+shift+i)を開くと一応馬鹿みたいにモールス符号が流れてきます</li>
+          <li>htmlもcssもjsほとんど初めての人が0から手打ちで書き上げたサイトなので不備しかありませんが宣伝↓</li>
+        </ul>
         <span style="color:red; font-size: 1.2em;">
           Twitter: @hunt_officiai --- PSID: parakokuchibiru7 --- YouTube: パラコロビッティ
         </span>
-        <img src="./images/hunt.png" style="width:100%;height:auto;">
+        <img src="./images/hunt.png" style="width:100%;height:auto;" class="images">
       </div>
     </div>
 <!--/////////////////////////////////////////////////////////////////////////-->
@@ -303,8 +303,6 @@
         //srcFile = input.files[0];
         videoinput.src = URL.createObjectURL(input.files[0]);//file の受け渡し
 
-        console.log(videoinput.height);
-
         status.innerText = '解析中です。';
         numberbox.innerText = '＊＊＊-＊＊＊-＊＊＊'
         videoinput.play();
@@ -320,7 +318,15 @@
 
 
         start.disabled = true;
+        start.style.opacity="0.5";//透明度の変換
+        start.style.borderColor="#444444";
+        start.style.cursor="default";
+        start.style.borderWidth="1px";
+
         stop.disabled  = false;
+        stop.style.cursor="pointer";
+
+
         input.value = '';
   }
 
@@ -328,18 +334,13 @@
     console.log('stoped processing');
 
     videoinput.pause();
-    status.innerText = '中止しました。';
     streaming = false;
-    start.disabled = false;
-    stop.disabled  = true;
   }
 
   function onEnd(){
       console.log('ended video');
       videoinput.pause();
       streaming = false;
-      start.disabled = false;
-      stop.disabled  = true;
   }
 
   videoinput.addEventListener('ended', (event) => {
@@ -360,12 +361,8 @@
                 numberbox.innerText = numbers.substr(0,3)+ "-" +numbers.substr(3,3)+ "-" +numbers.substr(6);
               }
               console.log('srcMat, gray ware deleted');
-              srcMat.delete();
-              gray.delete();
-              cntr.delete();
-              bin.delete();
-              rect.delete();
               Init();
+
               return;
           }
 
@@ -506,10 +503,23 @@
             }
         }
 function Init(){
+  srcMat.delete();
+  gray.delete();
+  cntr.delete();
+  bin.delete();
   tcnt = 0;
   fcnt = 0;
   numbers = "";
   getOk=false;
+  start.disabled = false;
+  start.style.opacity="1";//透明度の変換
+  start.style.borderColor="#4444ff";
+  start.style.cursor="pointer";
+  start.style.borderWidth="";
+
+  stop.disabled  = true;
+  stop.style.cursor="default";
+  console.log('setting-initialized');
 }
 
   </script>
