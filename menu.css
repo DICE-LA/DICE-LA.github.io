@@ -3,7 +3,7 @@
   border: solid 2px #ffa54c; /*枠の太さとカラー*/
   border-radius: 3px; /*枠の丸み*/
   /*margin-bottom: 2em; /*下の空白*/
-margin: 1.2em 0.6em 1.8em;
+  margin: 1.2em 0.6em 1.8em;
   display: block;/*改行して表示*/
   vertical-align: baseline;
 }
@@ -49,6 +49,7 @@ background: #EAEAEA;/*f7f7f7*/
 padding: 14px 12px;
 font-size: 24px;
 /*margin: 3.2em 0.6em 1.8em;*/
+}
 =======
 h2{
 background: #f7f7f7;
@@ -66,6 +67,8 @@ line-height: 1.4
 }
 
 .images{
+    pointer-events: none;
+}
 =======
 h3{
 background: #f7f7f7;
