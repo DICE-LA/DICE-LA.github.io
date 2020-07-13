@@ -51,16 +51,24 @@ font-size: 24px;
 /*margin: 3.2em 0.6em 1.8em;*/
 }
 
-h2{
+.hassaku{
+display:inline-block;
 background: #f7f7f7;
 padding: 14px 12px;
 font-size: 24px;
-margin: 3.2em 0.6em 1.8em;
-
+/*margin: 3.2em 0.6em 1.8em;*/
 font-weight: bold;
 line-height: 1.4
 }
 
+.solvbt{
+  display: inline-block;
+  background: #018002;
+  padding: 1px 12px;
+  margin: 0px 6px;
+  color: white;
+  border-radius: 4px;
+}
 
 .sec{
   margin: 3.2em 0.6em 1.8em;
@@ -68,22 +76,4 @@ line-height: 1.4
 
 .images{
     pointer-events: none;
-}
-
-h3{
-background: #f7f7f7;
-padding: 14px 12px;
-font-size: 24px;
-margin: 3.2em 0.6em 1.8em;
-font-weight: bold;
-line-height: 1.4
-}
-
-h4{
-background: #f7f7f7;
-padding: 14px 12px;
-font-size: 24px;
-margin: 3.2em 0.6em 1.8em;
-font-weight: bold;
-line-height: 1.4
 }
