@@ -6,6 +6,7 @@ box-sizing: border-box;
 .cp_qa {
 margin: 0 auto;
 background: #ffffff;
+padding: 8px;
 }
 .cp_qa input {
 display: none;
