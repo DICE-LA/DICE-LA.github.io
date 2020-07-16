@@ -1,0 +1,19 @@
+.m-wrap1{
+  width: 75%;
+}
+.m-wrap2{
+  width: 98.8%;
+}
+.m-wrap{
+  position: relative;
+  padding-top: 56.25%;
+  width: 100%;
+}
+
+.m-wrap iframe{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
