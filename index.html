@@ -294,23 +294,27 @@
 <h2 class="tit">3.モールス信号解読アプリ</h2>
 <div class="SubBody">
   <span style="font-weight: bold; color: red;">WEB版では動画と同じ長さの解析時間がかかります。</span>
+<!--/////////////////////////////////////////////////////////////////////////-->	
   <div id="app" class="appmas">
 <!--/////////////////////////////////////////////////////////////////////////-->
     <div id="top" class="app">
-      <input type="button"class="bts" id="Start" value="読み込んで開始" onclick="document.getElementById('Input').click();" />
+      <input type="button" id="Start" value="読み込んで開始" onclick="document.getElementById('Input').click();" />
       <input type="file" style="display:none;" id="Input" name="srcPath" accept="video/*"/>
       <button id="Stop" type="button" disabled>中止</button>
-      <div id="Status" style="border:1px solid gray; width:201px; padding: 0px 5px; display:inline-block">動画を選択してください</div>
-    </div>
+      <div id="Status" style="float: right; border:1px solid gray; width:198px; padding: 0px 5px; display:inline-block">動画を選択してください</div>
+<div style="clear:both;"></div>
+	  </div>
 <!--/////////////////////////////////////////////////////////////////////////-->
     <div id="mid" class="app">
-      <img src="./images/lacam.png" width="380px" class="images">
+      <img src="./images/lacam.png" width="100%" class="images">
     </div>
 <!--/////////////////////////////////////////////////////////////////////////-->
     <div id="bott" class="app">
-      あなたの番号は
-      <div id="Numbers" style="border:1px solid gray; width:251px; padding: 0px 5px; display:inline-block">***-***-***</div>
-    </div>
+      <div style="float:left; width:112px;">あなたの番号は</div>
+      <div id="Numbers" style="float: right; border:1px solid gray; width:248px; padding: 0px 5px; display:inline-block">***-***-***</div>
+    <div style="clear:both;"></div>
+	  </div>
+	  </div>
 <!--/////////////////////////////////////////////////////////////////////////-->
     <div id="test">
       <div>
@@ -334,8 +338,8 @@
       </div>
     </div>
 <!--/////////////////////////////////////////////////////////////////////////-->
+	
 	</div>
-	</dic>
   <!--=======================================================================-->
   <script>
   let input = document.getElementById('Input'); //入力ボタン
