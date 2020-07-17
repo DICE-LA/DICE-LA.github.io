@@ -292,6 +292,7 @@
 
 <section id="morse" class="sec">
 <h2 class="tit">3.モールス信号解読アプリ</h2>
+	
 <div class="SubBody">
   <span style="font-weight: bold; color: red;">WEB版では動画と同じ長さの解析時間がかかります。</span>
 <!--/////////////////////////////////////////////////////////////////////////-->	
@@ -302,8 +303,8 @@
       <input type="file" style="display:none;" id="Input" name="srcPath" accept="video/*"/>
       <button id="Stop" type="button" disabled>中止</button>
       <div id="Status" style="float: right; border:1px solid gray; width:198px; padding: 0px 5px; display:inline-block">動画を選択してください</div>
-<div style="clear:both;"></div>
-	  </div>
+      <div style="clear:both;"></div>
+    </div>
 <!--/////////////////////////////////////////////////////////////////////////-->
     <div id="mid" class="app">
       <img src="./images/lacam.png" width="100%" class="images">
@@ -312,16 +313,16 @@
     <div id="bott" class="app">
       <div style="float:left; width:112px;">あなたの番号は</div>
       <div id="Numbers" style="float: right; border:1px solid gray; width:248px; padding: 0px 5px; display:inline-block">***-***-***</div>
-    <div style="clear:both;"></div>
-	  </div>
-	  </div>
+      <div style="clear:both;"></div>
+    </div>
+  </div>
 <!--/////////////////////////////////////////////////////////////////////////-->
     <div id="test">
       <div>
-          <video id="videoInput" width="1280px" height="720px" style="display:none" muted></video>
+        <video id="videoInput" width="1280px" height="720px" style="display:none" muted></video>
+	<canvas id="canvasOutput" width="64px" height="64px"></canvas>     
       </div>
       <div>
-        <canvas id="canvasOutput" width="64px" height="64px"></canvas>
         <ul>
           <li>対応動画：.mp4 ＊他は確かめてません＊</li>
           <li>対応フレームレート：30fps  ＊60fpsでは確かめてません＊</li>
@@ -331,15 +332,14 @@
         </ul>
         <div class="g-ytsubscribe" data-channelid="UCGLicpTQCzhPAvx6hKQ5zBw" data-layout="full" data-count="default"></div>
         <a href="https://twitter.com/Hunt_officiaI?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @Hunt_officiaI</a>
-        <span style="color:red; font-size: 1.2em;">
-          PSID: parakokuchibiru7
-        </span>
+        <span style="color:red; font-size: 1.2em;">PSID: parakokuchibiru7</span>
         <img src="./images/hunt.png" style="width:100%;height:auto;" class="images">
       </div>
     </div>
 <!--/////////////////////////////////////////////////////////////////////////-->
 	
 	</div>
+	
   <!--=======================================================================-->
   <script>
   let input = document.getElementById('Input'); //入力ボタン
