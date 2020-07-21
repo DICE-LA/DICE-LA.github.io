@@ -323,7 +323,8 @@
     <div id="test">
       <div>
         <video id="videoInput" width="1280px" height="720px" style="display:none" muted></video>
-	<canvas id="canvasOutput" width="64px" height="64px"></canvas>     
+	<canvas id="canvasOutput" width="64px" height="64px"></canvas> 
+	<progress id="Progress" value="0" max="100" style="visibility: hidden">0%</progress>      
       </div>
       <div>
         <ul>
@@ -353,7 +354,7 @@
   /*テスト用*/
   let videoinput = document.getElementById('videoInput')
   let canvasOutput = document.getElementById('canvasOutput');
-
+  let progress = document.getElementById('Progress');
 
   /*処理に必要なやーつ*/
   let streaming = false;//動画を読み込んでいるか
@@ -375,7 +376,8 @@
   let getOk = false;
   //////////////////////////////////////////////////////////////////////////////
   const fps = 30;
-
+  let pvalue = 0;
+  let sec = 0;
 
   window.addEventListener('load', () => {
     console.log('Window Loaded');
@@ -499,6 +501,16 @@
             }
           }
           wpixs = 0;
+	  pvalue = Math.round(videoinput.currentTime/videoinput.duration*100);
+          if(pvalue>sec){
+            console.log(pvalue);
+            progress.value = pvalue;
+            progress.innerText = pvalue + '%';
+            sec++;
+          }
+          else {
+            ;
+          }    
           let delay = 1000/fps - (Date.now() - begin);
           setTimeout(processVideo, delay);
       } catch (err) {
@@ -617,6 +629,10 @@ function Init(){
 
   stop.disabled  = true;
   stop.style.cursor="default";
+  progress.style.visibility = "hidden";
+  progress.value = 0;
+  progress.innerText = "0%";
+  pvalue = sec =0;	
   console.log('setting-initialized');
 }
 
