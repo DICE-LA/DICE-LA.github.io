@@ -406,7 +406,8 @@
         status.innerText = '解析中です。';
         numberbox.innerText = '＊＊＊-＊＊＊-＊＊＊'
         videoinput.play();
-
+	progress.style.visibility ="visible";
+	  
         cap = new cv.VideoCapture(videoinput);
         srcMat = new cv.Mat(videoinput.height, videoinput.width, cv.CV_8UC4);  // For Video Capture
         gray = new cv.Mat(videoinput.height, videoinput.width, cv.CV_8UC1);  // For Canvas Preview
